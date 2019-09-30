@@ -30,3 +30,7 @@ mutation shortenUrl {
 - Run npm start
 
 - Run npm test to run all test file
+
+# Links
+
+- Heroku Link: https://short-url-staging.herokuapp.com/graphql

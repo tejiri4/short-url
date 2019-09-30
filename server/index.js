@@ -39,6 +39,15 @@ db.sequelize
     console.error("Unable to connect to the database:", err);
   });
 
+// catch 404 and forward to error handler
+app.use((req, res) => {
+  res.status(404).send({
+    data: {
+      message: "Route not found."
+    },
+  });
+});
+
 app.listen({ port: 4000 }, () =>
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
 );
