@@ -8,7 +8,7 @@ export default {
     hello: () => "Hello world!"
   },
   Mutation: {
-    getShortenUrl: async (_, { url }, { db }) => {
+    getShortUrl: async (_, { url }, { db }) => {
       const { Url } = db;
       const option = {
         where: {

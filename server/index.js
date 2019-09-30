@@ -1,15 +1,25 @@
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import cors from "cors";
+import dotenv from "dotenv";
 import db from "./models";
 import typeDefs from "./schema";
 import resolvers from "./resolvers";
+import { findOne } from "./services/dbServices";
+
+dotenv.config();
+
+const port = process.env.PORT || 4000;
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: { db },
-  uploads: false
+  uploads: false,
+  introspection: true,
+  playground: {
+    endpoint: `/graphql`
+  },
 });
 
 const app = express();
@@ -20,36 +30,32 @@ const router = express.Router();
 
 app.use(router);
 
+app.get("/", (req, res) =>
+  res.status(200).json({ message: "Welcome to short url app." })
+);
+
 app.get("/:character", async (req, res) => {
-  const { realUrl } = await db.url.findOne({
+  const option = {
     where: {
       shortUrl: `${process.env.BACKEND_BASE_URL}${req.params.character}`
     }
-  });
+  };
 
-  res.redirect(realUrl);
+  try {
+    const { realUrl } = await findOne(db.Url, option);
+    res.redirect(realUrl);
+  } catch (e) {
+    res.status(404).json({ message: "Route not found." });
+  }
 });
 
-db.sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Connection has been established successfully.");
-  })
-  .catch(err => {
-    console.error("Unable to connect to the database:", err);
-  });
+// Handle routes not found
+app.use("*", (req, res) =>
+  res.status(404).json({ message: "Route not found." })
+);
 
-// catch 404 and forward to error handler
-app.use((req, res) => {
-  res.status(404).send({
-    data: {
-      message: "Route not found."
-    },
-  });
-});
-
-app.listen({ port: 4000 }, () =>
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+app.listen({ port }, () =>
+  console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`)
 );
 
 export default server;

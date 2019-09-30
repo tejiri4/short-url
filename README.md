@@ -33,4 +33,4 @@ mutation shortenUrl {
 
 # Links
 
-- Heroku Link: https://short-url-staging.herokuapp.com/graphql
+- heroku: https://short-url-generate.herokuapp.com/graphql

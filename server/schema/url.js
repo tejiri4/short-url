@@ -6,6 +6,6 @@ export default gql`
   }
   
   type Mutation {
-    getShortenUrl(url: String): String
+    getShortUrl(url: String): String
   }
 `;
