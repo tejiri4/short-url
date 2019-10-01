@@ -13,7 +13,7 @@ An app that allows a user to generate an equivalent short url for long url input
 
 ```
 mutation shortenUrl {
-  getShortenUrl(url: "https://stackoverflow.com/questions/3809401/what-is-a-good-regular-expression-to-match-a-url")
+  getShortUrl(url: "https://stackoverflow.com/questions/3809401/what-is-a-good-regular-expression-to-match-a-url")
 }
 
 
